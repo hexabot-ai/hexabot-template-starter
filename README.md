@@ -1,113 +1,91 @@
 # Hexabot Template Starter
 
-Minimal Hexabot v3 project template used by the Hexabot CLI to scaffold a custom bot application. The generated project depends on `@hexabot-ai/api` and only contains the app-specific Nest wrapper, environment examples, and optional Docker Compose overlays.
+A small launchpad for building Hexabot AI automation apps.
 
-Not familiar with [Hexabot](https://hexabot.ai/)? It is an open-source chatbot / agent solution for creating and managing AI-powered, multi-channel, and multilingual chatbots. See the [Hexabot GitHub repository](https://github.com/Hexastack/Hexabot) for the full platform.
+This template gives you a ready-to-run Nest app powered by `@hexabot-ai/api`. That dependency brings the Hexabot runtime, workflow engine, extension discovery, and built admin frontend, so this repo can stay focused on your project-specific code.
 
-## Requirements
+Hexabot lets you build agentic workflows across channels: conversational, manual, scheduled, tool-calling, memory-aware, or whatever your automation needs next.
 
-- Node.js `20.19.x` (`engines.node` is `^20.19.0`).
-- npm, unless you change `hexabot.config.json` to another package manager.
-- Docker Desktop/Engine only when using `hexabot ... --docker`.
-- Hexabot CLI v3 alpha:
+## Quick Start
 
-  ```sh
-  npm install -g @hexabot-ai/cli@alpha
-  ```
+Requirements:
 
-## Getting Started
+- Node.js `20.19.x`
+- npm, unless you change `hexabot.config.json`
+- Docker only for `hexabot ... --docker`
 
-Create a project with the CLI, then run local development mode:
+Install the CLI and create an app:
 
 ```sh
+npm install -g @hexabot-ai/cli@alpha
 npx @hexabot-ai/cli@alpha create support-bot
 cd support-bot
 hexabot dev
 ```
 
-The CLI copies `.env.example` to `.env`, prompts for the first admin credentials, installs dependencies, and runs the configured `dev` script. Local development uses SQLite by default.
+The CLI creates `.env`, asks for the first admin credentials, installs dependencies, and starts local development with SQLite.
 
-If you scaffold or run this template directly without the CLI prompt, edit `SEED_ADMIN_*` in `.env` before the first startup.
+If you run this template directly, edit `SEED_ADMIN_*` in `.env` before the first startup.
 
-## Running
+## What You Can Build Here
 
-| Scenario | Command | Notes |
-| --- | --- | --- |
-| Local development | `npm run dev` or `hexabot dev` | Runs `nest start --watch` with SQLite by default. |
-| Production build | `npm run build` | Outputs the Nest bundle to `dist/`. |
-| Production start | `npm run start:prod` | Runs `node dist/main`. |
-| CLI production start | `hexabot start` | Runs the configured `start` script. |
-| Docker SQLite | `hexabot dev --docker` | Uses `docker/docker-compose.yml` plus the dev overlay. |
-| Docker Postgres | `hexabot dev --docker --services postgres` | Adds the Postgres and pgAdmin overlays. |
-| Docker Redis | `hexabot dev --docker --services redis` | Adds Redis and enables the Redis cache adapter. |
-| Diagnostics | `hexabot check [--docker-only]` | Verifies project, env, Node, and Docker prerequisites. |
+- Workflow actions with typed Zod input, output, and settings.
+- Channel integrations for chat, messaging, widgets, and other entry points.
+- Helper services for reusable integrations.
+- Binding and memory extensions when your workflows need shared capabilities or LLM-oriented context.
+- App-specific Nest modules, controllers, and services.
 
-Environment files:
+The starter action lives at `src/extensions/actions/dummy.action.ts`. Copy it, rename it, and make it do real work.
 
-- `.env.example` -> `.env` for local runs.
-- `.env.docker.example` -> `.env.docker` for Docker runs.
+## Commands
 
-For Docker-first development, edit `SEED_ADMIN_*` in `.env.docker` before the first container boot if you want non-default admin credentials.
-
-## Project Layout
-
-| Path | Purpose |
+| Task | Command |
 | --- | --- |
-| `src/main.ts` | Loads env vars and calls `bootstrapHexabotApp(AppModule)`. |
-| `src/app.module.ts` | Root module decorated with `@HexabotModule`; import your app modules here. |
-| `src/hello.controller.ts` | Minimal public endpoint showing how to add app-specific controllers. |
-| `src/extensions/actions/dummy.action.ts` | Example custom Hexabot v3 workflow action. |
-| `src/extensions/actions/i18n/` | Example action translations loaded by Hexabot. |
-| `src/extensions/helpers/` | Placeholder for custom helper services. |
-| `src/extensions/channels/` | Placeholder for custom channel integrations. |
-| `docker/` | Compose base file and optional Postgres/Redis overlays used by the CLI. |
-| `hexabot.config.json` | CLI config for scripts, package manager, env paths, and Compose base file. |
+| Local dev | `npm run dev` or `hexabot dev` |
+| Build | `npm run build` |
+| Production start | `npm run start:prod` |
+| CLI start | `hexabot start` |
+| Diagnostics | `hexabot check [--docker-only]` |
 
-## Extending The App
-
-Add regular Nest modules under `src/` and import them in `AppModule` through the existing `@HexabotModule` metadata.
-
-Custom Hexabot extensions live under `src/extensions`:
-
-- `actions` for v3 workflow actions.
-- `helpers` for helper integrations.
-- `channels` for channel adapters.
-
-The included `dummy_echo` action shows the v3 action shorthand used by Hexabot core: define Zod input/output/settings schemas, pass them to `createAction()`, and default-export the generated action from a `*.action.ts` file. After `npm run build`, Hexabot discovers compiled custom actions from `dist/extensions/actions/**/*.action.js`.
-
-Action translations live in `i18n/<lang>.translations.json` files under `src/extensions/actions`. Nest build assets are configured to copy extension i18n files and MJML templates when those folders exist.
-
-## Docker Notes
-
-Base Docker mode runs only the API and stores data in named volumes:
-
-- `api-data` -> `/app/uploads`
-- `api-sqlite-data` -> `/app/data`
-
-The Postgres overlay sets `DB_TYPE=postgres` for the API container and starts `postgres`. The dev Postgres overlay also exposes Postgres on `${DB_PORT:-5432}` and starts pgAdmin on port `9000`.
-
-The Redis overlay sets `REDIS_ENABLED=true` and starts `redis`. Combine overlays when needed:
+## Docker
 
 ```sh
+hexabot dev --docker
+hexabot dev --docker --services postgres
+hexabot dev --docker --services redis
 hexabot dev --docker --services postgres,redis
 ```
 
-Production-style Docker runs use the same base file without the dev overlay:
+SQLite is the default. The Postgres overlay sets `DB_TYPE=postgres`, starts `postgres`, and exposes pgAdmin on port `9000` in dev mode.
+
+Production-style Docker run:
 
 ```sh
 hexabot start --docker --services postgres,redis --build -d
 ```
 
-## Useful CLI Commands
+## Project Map
+
+| Path | Purpose |
+| --- | --- |
+| `src/main.ts` | Boots the Hexabot app. |
+| `src/app.module.ts` | Root module; import your app modules here. |
+| `src/hello.controller.ts` | Tiny example controller. |
+| `src/extensions/actions/` | Custom workflow actions and translations. |
+| `src/extensions/helpers/` | Helper integrations. |
+| `src/extensions/channels/` | Channel integrations. |
+| `docker/` | Compose base file and optional service overlays. |
+| `hexabot.config.json` | CLI scripts, env paths, package manager, and Docker config. |
+
+## Handy CLI
 
 ```sh
 hexabot env init
 hexabot env init --docker
 hexabot env list
 hexabot config show
-hexabot config set packageManager npm
 hexabot docker ps
 hexabot docker logs api -f
 ```
 
-This README is intended to be kept with generated projects. Update it when you add scripts, services, extensions, or deployment requirements.
+Keep this README close to the app. Update it when your project gains new scripts, services, extensions, or deployment rules.
