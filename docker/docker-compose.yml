@@ -1,64 +1,34 @@
 services:
   api:
-    container_name: api
     build:
       context: ../
-      target: development # or "production"
-    env_file: .env
+      dockerfile: ./Dockerfile
+      target: production
+    pull_policy: build
+    env_file: ../.env.docker
     ports:
-      - ${API_PORT}:3000
-      - 9229:9229 # vscode debug port
+      - 3000:3000
     networks:
-      - db-network
       - app-network
     volumes:
-      - ../modules:/app/src/extra
-      - ../extensions:/app/src/.hexabot/custom/extensions
       - api-data:/app/uploads
-    depends_on:
-      mongo:
-        condition: service_healthy
+      - api-sqlite-data:/app/data
     healthcheck:
-      test: "wget --spider http://localhost:3000"
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://127.0.0.1:3000/api/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
       start_period: 10s
-
-  ui:
-    container_name: ui
-    image: hexastack/hexabot-ui:latest
-    env_file: .env
-    ports:
-      - ${APP_FRONTEND_PORT}:8080
-    networks:
-      - app-network
-    depends_on:
-      api:
-        condition: service_healthy
-
-  mongo:
-    container_name: mongo
-    image: mongo:7.0
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-    networks:
-      - db-network
-    healthcheck:
-      test: echo 'db.stats().ok' | mongosh localhost:27017 --quiet
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 10s
-    volumes:
-      - mongo-data:/data/db
 
 volumes:
-  mongo-data:
   api-data:
+  api-sqlite-data:
 
 networks:
-  db-network:
   app-network:

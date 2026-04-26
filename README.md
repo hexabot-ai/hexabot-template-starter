@@ -1,118 +1,110 @@
 # Hexabot Template Starter
 
-Welcome to the **Hexabot Template Starter** repository! This template provides everything you need to get started with building a custom Hexabot project. It includes essential folders and files to help you extend Hexabot, define your own modules, and quickly run your project in Docker. Below you'll find details on the structure and how to use this template.
+Minimal Hexabot v3 project template used by the Hexabot CLI to scaffold a custom bot application. The generated project depends on `@hexabot-ai/api` and only contains the app-specific Nest wrapper, environment examples, and optional Docker Compose overlays.
 
-Not familiar with [Hexabot](https://hexabot.ai/) ? It's an open-source chatbot / agent solution that allows users to create and manage AI-powered, multi-channel, and multilingual chatbots with ease. If you would like to learn more, please visit the [official github repo](https://github.com/Hexastack/Hexabot/).
+Not familiar with [Hexabot](https://hexabot.ai/)? It is an open-source chatbot / agent solution for creating and managing AI-powered, multi-channel, and multilingual chatbots. See the [Hexabot GitHub repository](https://github.com/Hexastack/Hexabot) for the full platform.
 
-## Project Structure
+## Requirements
 
-- **extensions/**: This folder is where you can develop your own extensions for Hexabot. Inside, you'll find subfolders for:
+- Node.js `20.19.x` (`engines.node` is `^20.19.0`).
+- npm, unless you change `hexabot.config.json` to another package manager.
+- Docker Desktop/Engine only when using `hexabot ... --docker`.
+- Hexabot CLI v3 alpha:
 
-  - **channels/**: Add new messaging channels.
-  - **helpers/**: Add helper functions or utilities.
-  - **plugins/**: Create plugins to create custom blocks in the visual editor. Plugins is where you can perform text-to-action and integrate with 3rd party APIs. To get started, there is a `hello` plugin provided as an example.
-
-- **modules/**: Since Hexabot API is built on top of NestJS, this folder allows you to extend the Hexabot API by adding your own modules (controllers, services, etc.).
-
-- **Dockerfile**: Use this file to build a Docker image on top of Hexabot. It's pre-configured to get your project up and running in a containerized environment.
-
-- **docker/docker-compose.yml**: This file defines the services needed to run your Hexabot project using Docker Compose. It simplifies the setup of multiple services such as databases or other dependencies.
+  ```sh
+  npm install -g @hexabot-ai/cli@alpha
+  ```
 
 ## Getting Started
 
-1. **Install Hexabot CLI**:
-   To create a new Hexabot project, first install the Hexabot CLI globally:
+Create a project with the CLI, then run local development mode:
 
-   ```bash
-   npm install -g hexabot-cli
-   ```
+```sh
+npx @hexabot-ai/cli@alpha create support-bot
+cd support-bot
+hexabot dev
+```
 
-2. **Create Your Project**:
-   Use the Hexabot CLI to create a new chatbot project:
+The CLI copies `.env.example` to `.env`, prompts for the first admin credentials, installs dependencies, and runs the configured `dev` script. Local development uses SQLite by default.
 
-   ```bash
-   hexabot create my-chatbot
-   ```
+If you scaffold or run this template directly without the CLI prompt, edit `SEED_ADMIN_*` in `.env` before the first startup.
 
-3. **Configure Your Environment**:
+## Running
 
-   - Copy the `.env.example` file to `.env` and customize it according to your environment and configuration needs.
+| Scenario | Command | Notes |
+| --- | --- | --- |
+| Local development | `npm run dev` or `hexabot dev` | Runs `nest start --watch` with SQLite by default. |
+| Production build | `npm run build` | Outputs the Nest bundle to `dist/`. |
+| Production start | `npm run start:prod` | Runs `node dist/main`. |
+| CLI production start | `hexabot start` | Runs the configured `start` script. |
+| Docker SQLite | `hexabot dev --docker` | Uses `docker/docker-compose.yml` plus the dev overlay. |
+| Docker Postgres | `hexabot dev --docker --services postgres` | Adds the Postgres and pgAdmin overlays. |
+| Docker Redis | `hexabot dev --docker --services redis` | Adds Redis and enables the Redis cache adapter. |
+| Diagnostics | `hexabot check [--docker-only]` | Verifies project, env, Node, and Docker prerequisites. |
 
-   ```bash
-   cp .env.example .env
-   ```
+Environment files:
 
-4. **Run the Project**:
-   Navigate into the newly created folder and run the following command to start the project in development mode:
+- `.env.example` -> `.env` for local runs.
+- `.env.docker.example` -> `.env.docker` for Docker runs.
 
-   ```bash
-   hexabot dev
-   ```
+For Docker-first development, edit `SEED_ADMIN_*` in `.env.docker` before the first container boot if you want non-default admin credentials.
 
-   For production mode, you can use:
+## Project Layout
 
-   ```bash
-   hexabot start
-   ```
+| Path | Purpose |
+| --- | --- |
+| `src/main.ts` | Loads env vars and calls `bootstrapHexabotApp(AppModule)`. |
+| `src/app.module.ts` | Root module decorated with `@HexabotModule`; import your app modules here. |
+| `src/hello.controller.ts` | Minimal public endpoint showing how to add app-specific controllers. |
+| `src/extensions/actions/` | Placeholder for custom Hexabot v3 workflow actions. |
+| `src/extensions/helpers/` | Placeholder for custom helper services. |
+| `src/extensions/channels/` | Placeholder for custom channel integrations. |
+| `docker/` | Compose base file and optional Postgres/Redis overlays used by the CLI. |
+| `hexabot.config.json` | CLI config for scripts, package manager, env paths, and Compose base file. |
 
-   _Note_: The first run may take some time as it needs to download all required Docker images.
+## Extending The App
 
-5. **Configure your NLU Engine**:
-   After creating your new project, the **Hexabot LLM-NLU Engine** will be enabled by default. This NLU engine relies on one of the following LLM helpers being present, you can enable one of these by following the steps detailed in [LLM NLU Engine](https://docs.hexabot.ai/user-guide/nlu/nlu-engines/llm-nlu-engine) documentation page:
+Add regular Nest modules under `src/` and import them in `AppModule` through the existing `@HexabotModule` metadata.
 
-   - Ollama Helper (`hexabot-helper-ollama`)
-   - Google Gemini Helper (`hexabot-helper-gemini`)
-   - OpenAI ChatGPT Helper (`hexabot-helper-chatgpt`)
+Custom Hexabot extensions live under `src/extensions`:
 
-   You must follow the instructions of the selected LLM helper in their specific documentation before starting the project.
+- `actions` for v3 workflow actions.
+- `helpers` for helper integrations.
+- `channels` for channel adapters.
 
-## Built-in Features
+Nest build assets are configured to copy extension i18n files and MJML templates when those folders exist.
 
-This template includes both the Ollama **helper** and **plugin** by default to help you get started with NLU and generative AI features.
+## Docker Notes
 
-## Extending Hexabot
+Base Docker mode runs only the API and stores data in named volumes:
 
-You can easily extend Hexabot's functionality by installing additional extensions (channels, helpers, plugins) via npm. Below are some examples:
+- `api-data` -> `/app/uploads`
+- `api-sqlite-data` -> `/app/data`
 
-- Install a new channel (e.g., Messenger):
+The Postgres overlay sets `DB_TYPE=postgres` for the API container and starts `postgres`. The dev Postgres overlay also exposes Postgres on `${DB_PORT:-5432}` and starts pgAdmin on port `9000`.
 
-  ```bash
-  npm install hexabot-channel-messenger
-  ```
+The Redis overlay sets `REDIS_ENABLED=true` and starts `redis`. Combine overlays when needed:
 
-- Install a new plugin (e.g., ChatGPT integration):
-  ```bash
-  npm install hexabot-plugin-chatgpt
-  ```
+```sh
+hexabot dev --docker --services postgres,redis
+```
 
-## Docker Setup
+Production-style Docker runs use the same base file without the dev overlay:
 
-This template comes with a pre-configured **Dockerfile** and **docker-compose.yml** to help you containerize your project quickly.
+```sh
+hexabot start --docker --services postgres,redis --build -d
+```
 
-- **Dockerfile**: Builds your Hexabot-based project.
-- **docker-compose.yml**: Defines the necessary services for your project, allowing you to start everything with a single command.
+## Useful CLI Commands
 
-## Documentation
+```sh
+hexabot env init
+hexabot env init --docker
+hexabot env list
+hexabot config show
+hexabot config set packageManager npm
+hexabot docker ps
+hexabot docker logs api -f
+```
 
-For detailed information on how to get started, as well as in-depth user and developer guides, please refer to our full documentation available in the docs folder or visit the [Documentation](https://docs.hexabot.ai).
-
-## Contributing
-
-We welcome contributions from the community! Whether you want to report a bug, suggest new features, or submit a pull request, your input is valuable to us.
-
-Please refer to our contribution policy first : [How to contribute to Hexabot](https://github.com/Hexastack/Hexabot/blob/main/CONTRIBUTING.md)
-
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](./CODE_OF_CONDUCT.md)
-
-Feel free to join us on [Discord](https://discord.gg/rNb9t2MFkG)
-
-## License
-
-This software is licensed under the GNU Affero General Public License v3.0 (AGPLv3) with the following additional terms:
-
-1. The name "Hexabot" is a trademark of Hexastack. You may not use this name in derivative works without express written permission.
-2. All derivative works must include clear attribution to the original creator and software, Hexastack and Hexabot, in a prominent location (e.g., in the software's "About" section, documentation, and README file).
-
----
-
-Happy building with Hexabot! 🎉
+This README is intended to be kept with generated projects. Update it when you add scripts, services, extensions, or deployment requirements.

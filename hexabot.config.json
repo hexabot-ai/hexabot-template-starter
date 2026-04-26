@@ -1,0 +1,15 @@
+{
+  "devScript": "dev",
+  "startScript": "start",
+  "docker": {
+    "composeFile": "docker/docker-compose.yml",
+    "defaultServices": []
+  },
+  "env": {
+    "local": ".env",
+    "localExample": ".env.example",
+    "docker": ".env.docker",
+    "dockerExample": ".env.docker.example"
+  },
+  "packageManager": "npm"
+}
