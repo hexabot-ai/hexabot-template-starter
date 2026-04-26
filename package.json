@@ -18,7 +18,8 @@
     "@nestjs/platform-express": "^11.1.6",
     "dotenv": "^16.4.5",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
+    "rxjs": "^7.8.2",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.10",
