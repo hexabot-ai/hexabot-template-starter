@@ -56,7 +56,8 @@ For Docker-first development, edit `SEED_ADMIN_*` in `.env.docker` before the fi
 | `src/main.ts` | Loads env vars and calls `bootstrapHexabotApp(AppModule)`. |
 | `src/app.module.ts` | Root module decorated with `@HexabotModule`; import your app modules here. |
 | `src/hello.controller.ts` | Minimal public endpoint showing how to add app-specific controllers. |
-| `src/extensions/actions/` | Placeholder for custom Hexabot v3 workflow actions. |
+| `src/extensions/actions/dummy.action.ts` | Example custom Hexabot v3 workflow action. |
+| `src/extensions/actions/i18n/` | Example action translations loaded by Hexabot. |
 | `src/extensions/helpers/` | Placeholder for custom helper services. |
 | `src/extensions/channels/` | Placeholder for custom channel integrations. |
 | `docker/` | Compose base file and optional Postgres/Redis overlays used by the CLI. |
@@ -72,7 +73,9 @@ Custom Hexabot extensions live under `src/extensions`:
 - `helpers` for helper integrations.
 - `channels` for channel adapters.
 
-Nest build assets are configured to copy extension i18n files and MJML templates when those folders exist.
+The included `dummy_echo` action shows the v3 action shorthand used by Hexabot core: define Zod input/output/settings schemas, pass them to `createAction()`, and default-export the generated action from a `*.action.ts` file. After `npm run build`, Hexabot discovers compiled custom actions from `dist/extensions/actions/**/*.action.js`.
+
+Action translations live in `i18n/<lang>.translations.json` files under `src/extensions/actions`. Nest build assets are configured to copy extension i18n files and MJML templates when those folders exist.
 
 ## Docker Notes
 
