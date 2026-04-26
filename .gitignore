@@ -1,2 +1,8 @@
-.env
+dist
+*.sqlite
+uploads
 node_modules
+.env
+.env.*
+!.env.example
+!.env.docker.example

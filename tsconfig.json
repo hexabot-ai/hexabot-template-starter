@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types"],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -9,20 +8,23 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,
+    "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "paths": {
-      "@/*": ["node_modules/hexabot/src/*", "modules/*"],
-      "@/contrib/extensions/helpers/*": ["node_modules/*"]
-    }
+    "types": ["node"]
   },
-  "include": ["modules/**/*.ts", "extensions/**/*.ts", "node_modules/hexabot/**/*.d.ts"]
+  "include": [
+    "src",
+    "src/**/*.json"
+  ],
+  "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"]
 }

@@ -1,0 +1,20 @@
+services:
+  postgres:
+    ports:
+      - ${DB_PORT:-5432}:5432
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:8.9
+    restart: always
+    env_file: ../.env.docker
+    depends_on:
+      - postgres
+    ports:
+      - 9000:80
+    networks:
+      - db-network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-dev@hexabot.ai}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-dev_only}
+      PGADMIN_CONFIG_SERVER_MODE: "False"

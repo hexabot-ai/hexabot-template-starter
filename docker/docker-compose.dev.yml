@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: ../
+      dockerfile: ./Dockerfile
+      target: development
+    pull_policy: build
+    ports:
+      - 3000:3000
+    volumes:
+      - api-data:/app/uploads
+      - api-sqlite-data:/app/data
+      - ../src:/app/src
