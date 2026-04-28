@@ -25,6 +25,8 @@ hexabot dev
 
 The CLI creates `.env`, asks for the first admin credentials, installs dependencies, and starts local development with SQLite.
 
+The admin UI runs at `http://localhost:3000`.
+
 If you run this template directly, edit `SEED_ADMIN_*` in `.env` before the first startup.
 
 ## What You Can Build Here
