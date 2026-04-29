@@ -12,7 +12,7 @@
     "start:prod": "node dist/main"
   },
   "dependencies": {
-    "@hexabot-ai/api": "^3.2.2-alpha.1",
+    "@hexabot-ai/api": "^3.2.2-alpha.2",
     "@nestjs/common": "^11.1.6",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
@@ -27,7 +27,7 @@
     "@ai-sdk/mistral": "^2.0.25"
   },
   "devDependencies": {
-    "@nestjs/cli": "^11.0.10",
+    "@nestjs/cli": "^11.0.21",
     "@types/node": "^20.3.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
