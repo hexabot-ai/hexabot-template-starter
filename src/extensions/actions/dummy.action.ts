@@ -11,7 +11,6 @@ const dummyActionInputSchema = z.object({
     description: 'Name to include in the generated greeting.',
   }),
 });
-
 // Output fields become available to later workflow steps.
 const dummyActionOutputSchema = z.object({
   text: z.string().meta({
@@ -23,7 +22,6 @@ const dummyActionOutputSchema = z.object({
     description: 'ISO date when the dummy action executed.',
   }),
 });
-
 // Settings are configured on the action step and are separate from runtime input.
 const dummyActionSettingsSchema = z.object({
   greeting: z.string().min(1).default('Hello').meta({

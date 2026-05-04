@@ -9,7 +9,9 @@
     "dev": "nest start --watch",
     "start": "nest start",
     "build": "nest build",
-    "test": "jest --config jest.config.js",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
+    "test": "jest --config jest.config.js --passWithNoTests",
     "start:prod": "node dist/main"
   },
   "dependencies": {
@@ -28,10 +30,20 @@
     "@ai-sdk/mistral": "^2.0.25"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^9.39.4",
     "@nestjs/cli": "^11.0.21",
     "@types/jest": "^30.0.0",
     "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.59.1",
+    "@typescript-eslint/parser": "^8.59.1",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.6.0",
     "jest": "^30.2.0",
+    "prettier": "^3.8.3",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",

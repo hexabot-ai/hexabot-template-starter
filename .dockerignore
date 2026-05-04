@@ -6,9 +6,13 @@ Dockerfile
 .env.*
 .eslintrc.js
 .eslintrc-staged.js
+eslint.config.cjs
+eslint.config-staged.cjs
+tsconfig.eslint.json
 .git
 .gitignore
 .husky
+.npmignore
 .prettierrc
 coverage*
 README.md
