@@ -9,10 +9,11 @@
     "dev": "nest start --watch",
     "start": "nest start",
     "build": "nest build",
+    "test": "jest --config jest.config.js",
     "start:prod": "node dist/main"
   },
   "dependencies": {
-    "@hexabot-ai/api": "^3.2.2-alpha.2",
+    "@hexabot-ai/api": "^3.2.2-alpha.6",
     "@nestjs/common": "^11.1.6",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
@@ -28,7 +29,10 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.21",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.3.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.3"
