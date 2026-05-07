@@ -24,6 +24,7 @@
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
     "ai": "^5.0.91",
+    "chokidar": "^4.0.3",
     "dotenv": "^16.4.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",

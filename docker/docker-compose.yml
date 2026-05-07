@@ -5,9 +5,15 @@ services:
       dockerfile: ./Dockerfile
       target: production
     pull_policy: build
-    env_file: ../.env.docker
+    env_file:
+      - ../.env.docker
+    environment:
+      NODE_ENV: production
+      PORT: ${PORT:-3000}
+      DB_SYNCHRONIZE: ${DB_SYNCHRONIZE:-true}
+      DB_AUTO_MIGRATE: ${DB_AUTO_MIGRATE:-true}
     ports:
-      - 3000:3000
+      - ${API_PORT:-3000}:${PORT:-3000}
     networks:
       - app-network
     volumes:
@@ -19,12 +25,12 @@ services:
           "CMD",
           "node",
           "-e",
-          "require('http').get('http://127.0.0.1:3000/api/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
+          "const http = require('http'); const port = process.env.PORT || 3000; http.get({ host: '127.0.0.1', port, path: '/api/health' }, (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1));"
         ]
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 10s
+      start_period: 30s
 
 volumes:
   api-data:
