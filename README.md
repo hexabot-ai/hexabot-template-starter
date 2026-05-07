@@ -60,6 +60,8 @@ hexabot dev --docker --services postgres,redis
 
 SQLite is the default. The Postgres overlay sets `DB_TYPE=postgres`, starts `postgres`, and exposes pgAdmin on port `9000` in dev mode.
 
+Docker compose reads `.env.docker`. Copy `.env.docker.example` to `.env.docker` before running Docker and change all `dev_only` secrets before exposing the app. The defaults keep `DB_SYNCHRONIZE=true` so a fresh Postgres volume boots; review that setting before running against an existing production database.
+
 Production-style Docker run:
 
 ```sh

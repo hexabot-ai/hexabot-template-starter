@@ -3,6 +3,8 @@ services:
     environment:
       DB_TYPE: postgres
       DB_HOST: postgres
+      DB_PORT: "5432"
+      SESSION_LIMIT_SUBQUERY: "true"
     depends_on:
       postgres:
         condition: service_healthy
@@ -11,15 +13,10 @@ services:
       - app-network
 
   postgres:
-    container_name: postgres
-    hostname: postgres
     image: postgres:16-alpine
-    restart: always
-    env_file: ../.env.docker
-    environment:
-      POSTGRES_USER: ${DB_USERNAME:-dev_only}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-dev_only}
-      POSTGRES_DB: ${DB_NAME:-hexabot}
+    restart: unless-stopped
+    env_file:
+      - ../.env.docker
     networks:
       db-network:
         aliases:

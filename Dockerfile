@@ -43,9 +43,11 @@ RUN npm ci --omit=dev
 ###################################
 FROM base AS production
 ENV NODE_ENV=production
-COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY package.json ./
-COPY hexabot.config.json ./hexabot.config.json
+COPY --chown=node:node --from=prod-deps /app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/dist ./dist
+COPY --chown=node:node package.json ./
+COPY --chown=node:node hexabot.config.json ./hexabot.config.json
+RUN mkdir -p /app/uploads /app/data && chown -R node:node /app/uploads /app/data
+USER node
 EXPOSE 3000
 CMD ["node", "dist/main"]
