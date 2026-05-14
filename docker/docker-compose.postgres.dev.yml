@@ -6,8 +6,10 @@ services:
   pgadmin:
     image: dpage/pgadmin4:8.9
     restart: unless-stopped
-    env_file:
-      - ../.env.docker
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-dev@hexabot.ai}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-dev_only}
+      PGADMIN_CONFIG_SERVER_MODE: ${PGADMIN_CONFIG_SERVER_MODE:-False}
     depends_on:
       - postgres
     ports:
