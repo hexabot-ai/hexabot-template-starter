@@ -19,7 +19,7 @@
     "@ai-sdk/google": "^2.0.25",
     "@ai-sdk/groq": "^2.0.25",
     "@ai-sdk/mistral": "^2.0.25",
-    "@hexabot-ai/api": "^3.2.2-alpha.17",
+    "@hexabot-ai/api": "^3.2.2-alpha.18",
     "@nestjs/common": "^11.1.6",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
