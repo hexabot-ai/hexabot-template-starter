@@ -19,7 +19,7 @@
     "@ai-sdk/google": "^2.0.25",
     "@ai-sdk/groq": "^2.0.25",
     "@ai-sdk/mistral": "^2.0.25",
-    "@hexabot-ai/api": "^3.2.2-beta.0",
+    "@hexabot-ai/api": "^3.2.2-beta.1",
     "@nestjs/common": "^11.1.6",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
@@ -52,5 +52,24 @@
   },
   "engines": {
     "node": "^20.19.0"
+  },
+  "overrides": {
+    "ws": "8.20.1",
+    "protobufjs": "7.6.0",
+    "@protobufjs/utf8": "1.1.1",
+    "hono": "4.12.21",
+    "fast-uri": "3.1.2",
+    "express-rate-limit": "8.5.2",
+    "ip-address": "10.2.0",
+    "uuid": "11.1.1",
+    "brace-expansion": "5.0.6",
+    "tar": "7.5.15",
+    "sqlite3": "6.0.1",
+    "node-gyp": "12.3.0",
+    "@opentelemetry/sdk-node": "0.218.0",
+    "@opentelemetry/auto-instrumentations-node": "0.76.0",
+    "nestjs-dynamic-providers": {
+      "glob": "11.1.0"
+    }
   }
 }
