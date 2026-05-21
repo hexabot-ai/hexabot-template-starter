@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.53",
+    "@ai-sdk/amazon-bedrock": "4.0.107",
     "@ai-sdk/google": "^2.0.25",
     "@ai-sdk/groq": "^2.0.25",
     "@ai-sdk/mistral": "^2.0.25",
