@@ -15,21 +15,12 @@
     "start:prod": "node dist/main"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.53",
-    "@ai-sdk/amazon-bedrock": "4.0.107",
-    "@ai-sdk/google": "^2.0.25",
-    "@ai-sdk/groq": "^2.0.25",
-    "@ai-sdk/mistral": "^2.0.25",
-    "@hexabot-ai/api": "^3.2.2",
-    "@nestjs/common": "^11.1.6",
-    "@nestjs/core": "^11.1.6",
-    "@nestjs/platform-express": "^11.1.6",
-    "ai": "^5.0.91",
-    "chokidar": "^4.0.3",
-    "dotenv": "^16.4.5",
-    "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2",
-    "zod": "^4.3.6"
+    "@ai-sdk/amazon-bedrock": "^4.0.117",
+    "@ai-sdk/anthropic": "^3.0.84",
+    "@ai-sdk/google": "^3.0.82",
+    "@ai-sdk/groq": "^3.0.41",
+    "@ai-sdk/mistral": "^3.0.39",
+    "@hexabot-ai/api": "^3.2.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
