@@ -17,8 +17,8 @@ Requirements:
 Install the CLI and create an app:
 
 ```sh
-npm install -g @hexabot-ai/cli@alpha
-npx @hexabot-ai/cli@alpha create support-bot
+npm install -g @hexabot-ai/cli@latest
+npx @hexabot-ai/cli@latest create support-bot
 cd support-bot
 hexabot dev
 ```
