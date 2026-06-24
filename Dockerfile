@@ -1,7 +1,7 @@
 ###################################
 # Shared base image
 ###################################
-FROM node:20.19-bookworm-slim AS base
+FROM node:24.17-bookworm-slim AS base
 WORKDIR /app
 
 ###################################
