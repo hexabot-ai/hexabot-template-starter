@@ -10,7 +10,7 @@ Hexabot lets you build agentic workflows across channels: conversational, manual
 
 Requirements:
 
-- Node.js `24.17.x`
+- Node.js `24.22.x` (`>= 24.22.1`)
 - npm, unless you change `hexabot.config.json`
 - Docker only for `hexabot ... --docker`
 
