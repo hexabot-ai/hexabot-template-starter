@@ -9,6 +9,7 @@ Dockerfile
 eslint.config.cjs
 eslint.config-staged.cjs
 tsconfig.eslint.json
+tsconfig.spec.json
 .git
 .gitignore
 .husky
