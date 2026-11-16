@@ -3,8 +3,9 @@ module.exports = {
   rootDir: '.',
   testRegex: 'src/.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    // Specs are type-checked with tsconfig.spec.json, which adds the Jest
+    // globals on top of the app tsconfig (Node types only).
+    '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: 'tsconfig.spec.json' }],
   },
   testEnvironment: 'node',
 };
-
