@@ -13,8 +13,13 @@ module.exports = {
     // globals on top of the app tsconfig (Node types only).
     '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: 'tsconfig.spec.json' }],
   },
+  // Only the last `node_modules/` of a path is tested, so these packages are
+  // compiled wherever the package manager installs them: at the root, nested
+  // under another package (npm and yarn put `chokidar` 5 under
+  // `@hexabot-ai/api` when the root holds `chokidar` 4), or in pnpm's
+  // `node_modules/.pnpm/` store.
   transformIgnorePatterns: [
-    `/node_modules/(?!(${esmOnlyPackages.join('|')})/)`,
+    `/node_modules/(?!.*/node_modules/)(?!(${esmOnlyPackages.join('|')})/)`,
   ],
   testEnvironment: 'node',
 };
