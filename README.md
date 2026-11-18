@@ -29,6 +29,8 @@ The admin UI runs at `http://localhost:3000`.
 
 If you run this template directly, edit `SEED_ADMIN_*` in `.env` before the first startup.
 
+Local startup logs a warning while `SESSION_SECRET`, `SIGNED_URL_SECRET`, `PASSWORD_RESET_SECRET` and `CONFIRM_ACCOUNT_SECRET` keep their example values. In production the API refuses to start with them (see [Docker](#docker)).
+
 ## What You Can Build Here
 
 - Workflow actions with typed Zod input, output, and settings.
@@ -38,6 +40,11 @@ If you run this template directly, edit `SEED_ADMIN_*` in `.env` before the firs
 - App-specific Nest modules, controllers, and services.
 
 The starter action lives at `src/extensions/actions/dummy.action.ts`. Copy it, rename it, and make it do real work.
+
+When writing actions:
+
+- Reach app services from `execute({ input, settings, context })` through `context.services` (`i18n`, `settings`, `content`, `attachment`, `message`, `subscriber`, `credentials`, ...). For example, `context.services.attachment.readAsBuffer(attachment)` reads an uploaded file.
+- Tag any input or settings field that holds a resource id with `...workflowResourceRef(kind)` (from `@hexabot-ai/api`) inside its Zod `.meta({...})`, e.g. `workflowResourceRef('contentType')`. Workflow export/import then bundles the resource and remaps its id. Built-in kinds: `workflow`, `memoryDefinition`, `mcpServer`, `credential`, `contentType`, `label`.
 
 ## Commands
 
@@ -60,7 +67,15 @@ hexabot dev --docker --services postgres,redis
 
 SQLite is the default. The Postgres overlay sets `DB_TYPE=postgres`, starts `postgres`, and exposes pgAdmin on port `9000` in dev mode.
 
-Docker compose reads `.env.docker`. Copy `.env.docker.example` to `.env.docker` before running Docker and change all `dev_only` secrets before exposing the app. The defaults keep `DB_SYNCHRONIZE=true` so a fresh Postgres volume boots; review that setting before running against an existing production database.
+Docker compose reads `.env.docker`. Copy `.env.docker.example` to `.env.docker` before running Docker. The defaults keep `DB_SYNCHRONIZE=true` so a fresh Postgres volume boots; review that setting before running against an existing production database.
+
+The production image runs with `NODE_ENV=production`, and the API refuses to start while `SESSION_SECRET`, `SIGNED_URL_SECRET`, `PASSWORD_RESET_SECRET` or `CONFIRM_ACCOUNT_SECRET` is unset or left at its example value (`hexabot dev --docker` only logs a warning). Generate unique values and paste them into `.env.docker`:
+
+```sh
+for k in SESSION_SECRET SIGNED_URL_SECRET PASSWORD_RESET_SECRET CONFIRM_ACCOUNT_SECRET; do echo "$k=$(openssl rand -hex 32)"; done
+```
+
+Also change `JWT_SECRET` and the remaining `dev_only` passwords (database, pgAdmin) before exposing the app.
 
 Production-style Docker run:
 
